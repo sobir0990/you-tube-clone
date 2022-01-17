@@ -2,6 +2,7 @@ import {createStore, applyMiddleware, combineReducers} from 'redux';
 import {composeWithDevTools} from "redux-devtools-extension";
 import thunk from 'redux-thunk';
 import {authReducer} from "./reducers/auth.reducer";
+import {homeVideosReducer} from "./reducers/videos.reducer";
 
 const initialState = {
     name: 'name',
@@ -9,7 +10,8 @@ const initialState = {
 };
 
 const rootReduces = combineReducers({
-    auth: authReducer
+    auth: authReducer,
+    homeVideos: homeVideosReducer
 });
 
 const reducer = (initialState) => initialState;

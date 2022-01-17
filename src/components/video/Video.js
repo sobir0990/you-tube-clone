@@ -1,31 +1,90 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {AiFillEye} from 'react-icons/ai'
+import request from '../../api';
 import './_video.scss';
+import moment from 'moment';
+import numeral from 'numeral';
 
-function Video() {
+const Video = ({video}) => {
+
+    const {
+        id,
+        snippet: {
+            channelId,
+            channelTitle,
+            title,
+            publishedAt,
+            thumbnails: {medium}
+        }
+    } = video;
+
+    // console.log('video', video);
+
+    const _videoId = id?.videoId || id;
+
+    useEffect(() => {
+        const get_video_details = async () => {
+            const {
+                data: {items},
+            } = await request('/videos', {
+                params: {
+                    part: 'contentDetails,statistics',
+                    id: _videoId,
+                },
+            });
+            // console.log('itemsTest', items)
+            setViews(items[0].contentDetails.duration);
+            setDuration(items[0].statisitcs.viewCount);
+        }
+        get_video_details()
+    }, [_videoId]);
+
+
+    useEffect(() => {
+        const get_channel_icon = async () => {
+            const {
+                data: {items},
+            } = await request('/channels', {
+                params: {
+                    part: 'snippet',
+                    id: channelId,
+                },
+            });
+            setChannelIcon(items[0].snippet.thumbnails.default);
+        };
+        get_channel_icon();
+    }, [channelId]);
+
+
+    const [views, setViews] = useState(null);
+    const [duration, setDuration] = useState(null);
+    const [channelIcon, setChannelIcon] = useState(null);
+    const seconds = moment.duration(duration).asSeconds();
+    const _duration = moment.utc(seconds * 1000).format('mm:ss');
+
     return (
-        <>
-            <div className="video">
-                <div className="video__top">
-                    <img src="https://i.ytimg.com/vi/hnAIgloozxI/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCIWpsaIVZ5IzBei5Op2g-EYyjhkQ" alt=""/>
-                    <span>05:43</span>
-                </div>
-                <div className="video__title">
-                    Create app in 5 minutes
-                </div>
-                <div className="video__details">
-                    <span>
-                        <AiFillEye/> 5m Views
-                    </span>
-                    <span>5 days ago</span>
-                </div>
-                <div className="video__channel">
-                    <img src="https://yt3.ggpht.com/CdQ9n5dx6FqLmioEflJ5Dtmjfk8n9RfM2NNJ40lpX7HFWiJKWSM6V0PKRYhgCnUwJoOqOm6J9g=s68-c-k-c0x00ffffff-no-rj" alt=""/>
-                    <p>Rainbow Hat Jr</p>
-                </div>
+        <div className="video">
+            <div className="video__top">
+                <img src={medium.url} alt=""/>
+                <span>{_duration}</span>
             </div>
-        </>
+            <div className="video__title">
+                Create app in 5 minutes
+            </div>
+            <div className="video__details">
+                    <span>
+                        <AiFillEye/> {numeral(views).format('0.a')} Views
+                    </span>
+                <span>{moment(publishedAt).fromNow()}</span>
+            </div>
+            <div className="video__channel">
+                <img
+                    src={channelIcon?.url}
+                    alt=""/>
+                <p>{channelTitle}</p>
+            </div>
+        </div>
     );
-}
+};
 
 export default Video;
