@@ -11,12 +11,16 @@ export const homeVideosReducer = (
     const {type, payload} = action;
 
     switch (type) {
-
         case HOME_VIDEOS_SUCCESS:
-            console.log('payload', action);
+            console.log('payload', payload);
+            console.log('payload.category', payload.category);
+            console.log('state', state);
             return {
                 ...state,
-                videos: payload.videos,
+                videos:
+                    state.activeCategory === payload.category
+                        ? [...state.videos, ...payload.videos]
+                        : payload.videos,
                 loading: false,
                 nextPageToken: payload.nextPageToken,
                 activeCategory: payload.category

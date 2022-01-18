@@ -33,8 +33,8 @@ const Video = ({video}) => {
                 },
             });
             // console.log('itemsTest', items)
-            setViews(items[0].contentDetails.duration);
-            setDuration(items[0].statisitcs.viewCount);
+            setDuration(items[0].contentDetails.duration);
+            setViews(items[0].statistics.viewCount);
         }
         get_video_details()
     }, [_videoId]);
@@ -59,8 +59,9 @@ const Video = ({video}) => {
     const [views, setViews] = useState(null);
     const [duration, setDuration] = useState(null);
     const [channelIcon, setChannelIcon] = useState(null);
+
     const seconds = moment.duration(duration).asSeconds();
-    const _duration = moment.utc(seconds * 1000).format('mm:ss');
+    const _duration = moment.utc(seconds * 1000).format('mm:ss')
 
     return (
         <div className="video">
@@ -69,7 +70,7 @@ const Video = ({video}) => {
                 <span>{_duration}</span>
             </div>
             <div className="video__title">
-                Create app in 5 minutes
+                {title}
             </div>
             <div className="video__details">
                     <span>

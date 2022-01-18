@@ -50,7 +50,7 @@ export const log_out = () => async dispatch => {
     await auth.signOut();
     dispatch({
         type: LOG_OUT
-    })
+    });
 
     sessionStorage.removeItem('ytc-access-token');
     sessionStorage.removeItem('ytc-user');
