@@ -5,7 +5,7 @@ import VideoMetaData from "../../components/videoMetaData/VideoMetaData";
 import VideoHorizontal from "../../components/videoHorizontal/VideoHorizontal";
 import Comments from "../../components/comments/Comments";
 import './watchScreen.scss';
-import {getVideoById} from "../../redux/actions/videos.action";
+import {getRelatedVideos, getVideoById} from "../../redux/actions/videos.action";
 import {useDispatch, useSelector} from "react-redux";
 
 const WatchScreen = () => {
@@ -14,10 +14,16 @@ const WatchScreen = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(getVideoById(id))
+
+        dispatch(getVideoById(id));
+
+        dispatch(getRelatedVideos(id));
+
     }, [dispatch, id]);
 
     const {video, loading} = useSelector(state => state.selectedVideo);
+
+    const {videos, loading: relatedVideoLoading} = useSelector(state => state.relatedVideos);
 
     return (
         <>
@@ -40,7 +46,8 @@ const WatchScreen = () => {
                 </Col>
                 <Col lg={4}>
                     {
-                        [...Array(10)].map(() => <VideoHorizontal/>)
+                        !loading &&
+                            videos?.filter(video => video.snippet).map((video) => <VideoHorizontal video={video} key={video.id.videoId}/>)
                     }
                 </Col>
             </Row>
