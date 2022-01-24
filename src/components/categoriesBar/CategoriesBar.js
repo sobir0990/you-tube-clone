@@ -5,8 +5,8 @@ import {getPopularVideos, getVideosByCategory} from "../../redux/actions/videos.
 
 const keywords = [
     'All',
-    'React js',
-    'Angular js',
+    'Fara Tashkentskiy',
+    'Долина Волков',
     'React Native',
     'use of API',
     'Redux',
