@@ -8,7 +8,7 @@ import numeral from 'numeral';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 
-const Video = ({video}) => {
+const Video = ({video, channelScreen}) => {
 
     const {
         id,
@@ -18,10 +18,11 @@ const Video = ({video}) => {
             title,
             publishedAt,
             thumbnails: {medium}
-        }
+        },
+        contentDetails
     } = video;
 
-    const _videoId = id?.videoId || id;
+    const _videoId = id?.videoId || contentDetails?.videoId || id;
 
     useEffect(() => {
         const get_video_details = async () => {
@@ -85,14 +86,15 @@ const Video = ({video}) => {
                     </span>
                 <span>{moment(publishedAt).fromNow()}</span>
             </div>
-            <div className="video__channel">
-                {/*<img*/}
-                {/*    src={channelIcon?.url}*/}
-                {/*    alt=""/>*/}
+            {
+                !channelScreen && (
+                    <div className="video__channel">
+                        <LazyLoadImage src={channelIcon?.url} effect='blur' />
+                        <p>{channelTitle}</p>
+                    </div>
+                )
+            }
 
-                <LazyLoadImage src={channelIcon?.url} effect='blur' />
-                <p>{channelTitle}</p>
-            </div>
         </div>
     );
 };
