@@ -18,8 +18,8 @@ const SearchScreen = () => {
 
     const {videos, loading} = useSelector(state => state.searchedVideos);
 
-    console.log('query', query)
-    console.log('videos', videos)
+    console.log('query', query);
+    console.log('videos', videos);
 
     return (
         <Container>

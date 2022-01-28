@@ -15,9 +15,7 @@ const WatchScreen = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-
         dispatch(getVideoById(id));
-
         dispatch(getRelatedVideos(id));
 
     }, [dispatch, id]);

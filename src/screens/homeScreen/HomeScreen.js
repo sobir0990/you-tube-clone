@@ -6,6 +6,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {getPopularVideos, getVideosByCategory} from "../../redux/actions/videos.action";
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Skeleton,{SkeletonTheme } from 'react-loading-skeleton'
+
 import SkeleteionVideo from "../../components/skeletions/SkeletionVideo";
 
 const HomeScreen = () => {
